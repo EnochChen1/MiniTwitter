@@ -1,5 +1,9 @@
-public class App {
+import javax.swing.SwingUtilities;
+
+public class Driver {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        SwingUtilities.invokeLater(() -> {
+            new AdminControlPanel().setVisible(true);
+        });
     }
 }
