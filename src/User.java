@@ -36,7 +36,9 @@ public class User extends AbstractUser implements Subject {
         return newsFeed;
     }
 
-    
+    public int getPositiveMessageCount() {
+        return positiveMessageCount;
+    }
 
     public void Tweet(String message) {
         this.latestMessage = message;
