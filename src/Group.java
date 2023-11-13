@@ -1,6 +1,10 @@
 import java.util.HashMap;
 import java.util.Map;
-
+/*
+ * Class for groups in mini twitter app
+ * Can contain users and other groups
+ * checked
+ */
 public class Group extends AbstractUser {
 
     private Map<String,AbstractUser> groups;

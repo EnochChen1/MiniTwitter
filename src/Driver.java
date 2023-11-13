@@ -1,9 +1,22 @@
-import javax.swing.SwingUtilities;
+import java.awt.EventQueue;
 
-public class Driver {
-    public static void main(String[] args) throws Exception {
-        SwingUtilities.invokeLater(() -> {
-            new AdminControlPanel().setVisible(true);
+import javax.swing.JFrame;
+
+public class Driver extends JFrame {
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    AdminControlPanel frame = AdminControlPanel.getInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
+
 }

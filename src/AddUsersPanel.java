@@ -9,6 +9,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
+/*
+ * User Panel for creating users and groups
+ * checked
+ */
 
 public class AddUsersPanel extends ControlPanel {
 
@@ -75,7 +79,7 @@ public class AddUsersPanel extends ControlPanel {
             public void actionPerformed(ActionEvent arg0) {
                 // check if user ID already exists
                 if (allUsers.containsKey(userName.getText())) {
-                    JOptionPane.showMessageDialog(frame, "User already exists choose different name", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "User already exists choose a different name", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     Observer child = new User(userName.getText());
 
@@ -101,14 +105,14 @@ public class AddUsersPanel extends ControlPanel {
             public void actionPerformed(ActionEvent e) {
                 // check if user ID already exists
                 if (allUsers.containsKey(groupName.getText())) {
-                    JOptionPane.showMessageDialog(frame, "User already exists choose different name", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "User already exists choose a different name", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     Observer child = new Group(groupName.getText());
 
                     allUsers.put(((AbstractUser) child).getUserName(), child);
                     ((TreePanel) treePanel).addGroup((DefaultMutableTreeNode) child);
                 }
-            }
+            }   
         });
     }
 

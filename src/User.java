@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/*
+ * This is the class for individual accounts in the minitwitter
+ * They can tweet and follow other people
+ * checked
+ */
 public class User extends AbstractUser implements Subject {
     private static final List<String> POSITIVE_WORDS = Arrays.asList("good","great", "excellent"
     , "nice", "awesome");

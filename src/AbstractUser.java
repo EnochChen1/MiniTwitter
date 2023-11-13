@@ -4,7 +4,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /*
- * This is the abstract class that implements Composite Design
+ * This is the abstract class that implements Composite Design, checked
  */
 
 public abstract class AbstractUser extends DefaultMutableTreeNode implements Observer{

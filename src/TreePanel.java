@@ -103,7 +103,7 @@ public class TreePanel extends JPanel {
         if (parent.getClass() != Group.class) {
             parent = (DefaultMutableTreeNode) parent.getUserObject();
         }
-        ((Group) parent).addUserInGroup((User) child);
+        ((Group) parent).addUserInGroup((AbstractUser) child);
     }
 
     private void addComponents() {

@@ -184,9 +184,9 @@ public class UserViewPanel extends ControlPanel {
                 AbstractUser toFollow = (AbstractUser) allUsers.get(toFollowTextField.getText());
 
                 if (!allUsers.containsKey(toFollowTextField.getText())) {
-                    JOptionPane.showMessageDialog(null, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (toFollow.getClass() == Group.class) {
-                    JOptionPane.showMessageDialog(null, "Cannot follow group", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Cannot follow group", "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (allUsers.containsKey(toFollowTextField.getText())) {
                     ((Subject) toFollow).attach((Observer) user);
                 }
