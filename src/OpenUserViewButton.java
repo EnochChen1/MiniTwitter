@@ -39,7 +39,6 @@ public class OpenUserViewButton extends ControlPanel {
 
     private void addComponents() {
         addComponent(this, openUserViewButton, 1, 2, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        addComponent(this, spacerPanel, 1, 3, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
     }
 
     private void initializeComponents() {
@@ -48,9 +47,6 @@ public class OpenUserViewButton extends ControlPanel {
         openUserViewButton = new JButton("Open User View");
         openUserViewButton.setBackground(Color.cyan);
         initializeOpenUserViewActionListener();
-
-        // Empty spacer
-        spacerPanel = new JPanel();
     }
 
     /**
