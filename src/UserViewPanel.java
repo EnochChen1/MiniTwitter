@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -50,9 +51,6 @@ public class UserViewPanel extends ControlPanel {
         addComponents();
     }
 
-    /*
-     * Private methods
-     */
 
     private void addComponents() {
         addComponent(frame, toFollowTextField, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
@@ -70,8 +68,9 @@ public class UserViewPanel extends ControlPanel {
         constraints = new GridBagConstraints();
         constraints.ipady = 100;
 
-        toFollowTextField = new JTextField("User ID");
+        toFollowTextField = new JTextField("");
         followUserButton = new JButton("Follow User");
+        followUserButton.setBackground(Color.cyan);
         initializeFollowUserButtonActionListener();
 
         currentFollowingTextArea = new JTextArea("Current Following: ");
@@ -79,11 +78,12 @@ public class UserViewPanel extends ControlPanel {
         currentFollowingScrollPane = new JScrollPane(currentFollowingTextArea);
         currentFollowingScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        tweetMessageTextArea = new JTextArea("Tweet Message");
+        tweetMessageTextArea = new JTextArea("");
         tweetMessageScrollPane = new JScrollPane(tweetMessageTextArea);
         tweetMessageScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         postTweetButton = new JButton("Post Tweet");
+        postTweetButton.setBackground(Color.cyan);
         initializePostTweetButtonActionListener();
 
         newsFeedTextArea = new JTextArea("News Feed: ");
@@ -110,13 +110,13 @@ public class UserViewPanel extends ControlPanel {
         frame.setLayout(new GridBagLayout());
         frame.setSize(800, 400);
         frame.setVisible(true);
-        frame.setTitle(((AbstractUser) user).getID());
+        frame.setTitle(((AbstractUser) user).getUserName());
 
         // allows UserViewPanel to be reopened after it has been closed
         frame.addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
-                openPanels.remove(((AbstractUser) user).getID());
+                openPanels.remove(((AbstractUser) user).getUserName());
             }
         });
     }
@@ -148,14 +148,10 @@ public class UserViewPanel extends ControlPanel {
         currentFollowingTextArea.setCaretPosition(0);
     }
 
-    /*
-     * Action Listeners
-     */
-
     /**
      * Initializes action listener for PostTweetButton.  Sends
      * specified message to the news feeds of the followers of
-     * this AbstractUser.
+     * this User.
      */
     private void initializePostTweetButtonActionListener() {
         postTweetButton.addActionListener(new ActionListener() {
@@ -173,7 +169,7 @@ public class UserViewPanel extends ControlPanel {
 
     /**
      * Initializes action listener for FollowUserButton.  Adds this
-     * AbstractUser as a follower of the specified User.  Cannot follow
+     * User as a follower of the specified User.  Cannot follow
      * a Group.
      */
     private void initializeFollowUserButtonActionListener() {

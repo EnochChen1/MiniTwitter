@@ -1,4 +1,4 @@
-public class MessagesTotalVisitor implements Visitor {
+public class VisitorTotalUsers implements Visitor {
 
     @Override
     public int visitUser(AbstractUser user) {
@@ -15,14 +15,14 @@ public class MessagesTotalVisitor implements Visitor {
 
     @Override
     public int visitSingleUser(AbstractUser user) {
-        return ((User) user).getMessageCount();
+        return 1;
     }
 
     @Override
     public int visitGroupUser(AbstractUser user) {
         int count = 0;
 
-        for (AbstractUser u : ((Group) user).getGroupUsers().values()) {
+        for (AbstractUser u : ((Group) user).getGroups().values()) {
             count += visitUser(u);
         }
 

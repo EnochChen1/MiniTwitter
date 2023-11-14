@@ -1,40 +1,43 @@
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /*
- * This is the abstract class that implements Composite Design, checked
+ * This is the abstract class that implements Composite Design
+ * Core model needs a tree, which requires Composite Design Pattern
+ * 
+ * This also implements the Observer Design Pattern
  */
 
 public abstract class AbstractUser extends DefaultMutableTreeNode implements Observer {
 
-    private String id;
+    private String userName;
     private int messageCount;
 
-    public abstract boolean contains(String id);
-    public abstract int getSingleUserCount();
-    public abstract int getGroupUserCount();
+    public abstract boolean contains(String userName);
+    public abstract int getUserCount();
+    public abstract int getGroupCount();
 
-    public AbstractUser(String id) {
-        super(id);
-        this.id = id;
+    public AbstractUser(String userName) {
+        super(userName);
+        this.userName = userName;
         this.setMessageCount(0);
     }
 
     /**
-     * Returns the user ID of this AbstractUser.
+     * Returns username of this AbstractUser.
      */
-    public String getID() {
-        return id;
+    public String getUserName() {
+        return userName;
     }
 
     /**
-     * Returns the total number of messages sent by this AbstractUser.
+     * Returns total number of messages sent by this AbstractUser.
      */
     public int getMessageCount() {
         return messageCount;
     }
 
     /**
-     * Sets the total number of messages sent by this AbstractUser
+     * Sets total number of messages sent by this AbstractUser
      * to the specified integer.
      */
     public void setMessageCount(int messageCount) {

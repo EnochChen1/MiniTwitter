@@ -7,11 +7,15 @@ import java.util.HashMap;
 /*
  * This is the class for individual accounts in the minitwitter
  * They can tweet and follow other people
- * checked
+ * 
+ * The Observer design pattern is implemented here
+ * The newsFeed gets updated immediately whenever the user
+ * or whomever they followed posts a tweet
  */
 public class User extends AbstractUser implements Subject {
 
-    private static final List<String> POSITIVE_WORDS = Arrays.asList("good", "great", "excellent", "awesome");
+    private static final List<String> POSITIVE_WORDS = Arrays.asList("good", "great", "excellent",
+     "awesome", "nice", "amazing", "beautiful", "cool", "like", "love");
 
     private Map<String, Observer> followers;
     private Map<String, Subject> following;
@@ -20,30 +24,30 @@ public class User extends AbstractUser implements Subject {
     private String latestMessage;
     private int positiveMessageCount;
 
-    public User(String id) {
-        super(id);
+    public User(String userName) {
+        super(userName);
         followers = new HashMap<String, Observer>();
-        followers.put(this.getID(), this);
+        followers.put(this.getUserName(), this);
         following = new HashMap<String, Subject>();
         newsFeed = new ArrayList<String>();
     }
 
     /**
-     * Returns the User followers of this AbstractUser.
+     * Returns the User followers of this User.
      */
     public Map<String, Observer> getFollowers() {
         return followers;
     }
 
     /**
-     * Returns the SingleUsers this AbstractUser is following.
+     * Returns the Users this User is following.
      */
     public Map<String, Subject> getFollowing() {
         return following;
     }
 
     /**
-     * Returns the news feed of this AbstractUser.
+     * Returns the news feed of this User.
      */
     public List<String> getNewsFeed() {
         return newsFeed;
@@ -51,7 +55,7 @@ public class User extends AbstractUser implements Subject {
 
     /**
      * Sends specified message to the news feeds of the
-     * followers of this AbstractUser, checks if message is positive,
+     * followers of this User, checks if message is positive,
      */
     public void sendMessage(String message) {
         this.latestMessage = message;
@@ -65,7 +69,7 @@ public class User extends AbstractUser implements Subject {
     }
 
     /**
-     * Returns the most recent message sent by this AbstractUser.
+     * Returns the most recent message sent by this User.
      */
     public String getLatestMessage() {
         return this.latestMessage;
@@ -73,63 +77,51 @@ public class User extends AbstractUser implements Subject {
 
     /**
      * Returns the number of positive messages sent by
-     * this AbstractUser.
+     * this User.
      */
     public int getPositiveMessageCount() {
         return positiveMessageCount;
     }
 
-    /*
-     * Composite methods
-     */
-
     /**
      * Returns true if specified user ID matches
-     * the user ID of this AbstractUser.
+     * the user ID of this User.
      */
     @Override
-    public boolean contains(String id) {
-        return this.getID().equals(id);
+    public boolean contains(String userName) {
+        return this.getUserName().equals(userName);
     }
 
     /**
-     * Returns the total number of GroupUsers contained
-     * in this AbstractUser.
+     * Returns the groups in this user, none
      */
     @Override
-    public int getGroupUserCount() {
+    public int getGroupCount() {
         return 0;
     }
 
     /**
-     * Returns the total number of SingleUsers contained
-     * in this AbstractUser.
+     * Returns the total number of Users this is, one
      */
     @Override
-    public int getSingleUserCount() {
+    public int getUserCount() {
         return 1;
     }
 
-    /*
-     * Observer methods
-     */
-
+  
     /**
-     * Updates the news feed of this AbstractUser with the most recent
-     * message sent by the specified subject AbstractUser.
+     * Updates the news feed of this User with the most recent
+     * message sent by a User this User follows.
      */
     @Override
     public void update(Subject subject) {
-        newsFeed.add(0, (((User) subject).getID() + ": " + ((User) subject).getLatestMessage()));
+        newsFeed.add(0, "Posted by "+(((User) subject).getUserName() + ": " + ((User) subject).getLatestMessage()));
     }
 
-    /*
-     * Subject methods
-     */
 
     /**
-     * Adds the specified observer AbstractUser as a follower of
-     * this subject AbstractUser.
+     * Adds the specified observer User as a follower of
+     * this subject User.
      */
     @Override
     public void attach(Observer observer) {
@@ -138,7 +130,7 @@ public class User extends AbstractUser implements Subject {
 
     /**
      * Updates the observer Users that are followers
-     * of this subject AbstractUser.
+     * of this subject User.
      */
     @Override
     public void notifyObservers() {
@@ -147,38 +139,34 @@ public class User extends AbstractUser implements Subject {
         }
     }
 
-    /*
-     * Visitor methods
-     */
 
     @Override
     public void accept(Visitor visitor) {
         visitor.visitSingleUser(this);
     }
 
-    /*
-     * Private methods
-     */
 
     /**
-     * Adds specified {@link AbstractUser} as follower.
+     * Adds specified User as follower.
+     * Adds Follower with their username and their observer
      */
     private void addFollower(Observer user) {
-        this.getFollowers().put(((AbstractUser) user).getID(), user);
+        this.getFollowers().put(((AbstractUser) user).getUserName(), user);
         ((User) user).addUserToFollow(this);
     }
 
     /**
-     * Adds specified {@link AbstractUser} (not user group) to follow.
+     * Adds specified User (not user group) to follow and keep track of.
      */
     private void addUserToFollow(Subject toFollow){
         if (toFollow.getClass() == User.class) {
-            getFollowing().put(((AbstractUser) toFollow).getID(), toFollow);
+            getFollowing().put(((AbstractUser) toFollow).getUserName(), toFollow);
         }
     }
 
     /**
      * Returns true if the specified message is positive.
+     * Needed for Positive Percentage
      */
     private boolean isPositiveMessage(String message) {
         boolean positive = false;

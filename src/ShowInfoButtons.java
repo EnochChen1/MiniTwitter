@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
-public class ShowInfoPanel extends ControlPanel {
+public class ShowInfoButtons extends ControlPanel {
 
     private JButton userTotalButton;
     private JButton groupTotalButton;
@@ -23,7 +24,7 @@ public class ShowInfoPanel extends ControlPanel {
     /**
      * Create the panel.
      */
-    public ShowInfoPanel(JPanel treePanel) {
+    public ShowInfoButtons(JPanel treePanel) {
         super();
 
         this.treePanel = treePanel;
@@ -40,22 +41,26 @@ public class ShowInfoPanel extends ControlPanel {
 
     private void initializeComponents() {
         userTotalButton = new JButton("Show User Total");
+        userTotalButton.setBackground(Color.cyan);
         initializeUserTotalButtonActionListener();
 
         groupTotalButton = new JButton("Show Group Total");
+        groupTotalButton.setBackground(Color.cyan);
         initializeGroupTotalButtonActionListener();
 
         messagesTotalButton = new JButton("Show Messages Total");
+        messagesTotalButton.setBackground(Color.cyan);
         initializeMessagesTotalButtonActionListener();
 
         positivePercentageButton = new JButton("Show Positive Percentage");
+        positivePercentageButton.setBackground(Color.cyan);
         initializePositivePercentageButtonActionListener();
     }
 
     /**
      * Returns the selected AbstractUser in the TreePanel.
      */
-    private DefaultMutableTreeNode getSelectedNode() {
+    /*private DefaultMutableTreeNode getSelectedNode() {
         JTree tree = ((TreePanel) treePanel).getTree();
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
         if (!((TreePanel) treePanel).getRoot().equals(selectedNode)) {
@@ -64,17 +69,17 @@ public class ShowInfoPanel extends ControlPanel {
 
         return selectedNode;
     }
+    */
 
-    /*
-     * Action Listeners
-     */
+    private DefaultMutableTreeNode getRootTreeNode() {
+        JTree tree = ((TreePanel) treePanel).getTree();
+        DefaultMutableTreeNode rootTreeNode = ((TreePanel) treePanel).getRoot();
+        return rootTreeNode;
+    }
+
 
     /**
-     * Initializes action listener for UserTotalButton.  Opens message
-     * dialog box for the specified AbstractUser.
-     *
-     * Displays total number of SingleUsers contained within
-     * the specified AbstractUser.
+     * Displays total number of SingleUsers contained within Root.
      */
     private void initializeUserTotalButtonActionListener() {
         userTotalButton.addActionListener(new ActionListener() {
@@ -82,28 +87,22 @@ public class ShowInfoPanel extends ControlPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // get AbstractUser selected in TreePanel
-                DefaultMutableTreeNode selectedNode = getSelectedNode();
+                DefaultMutableTreeNode rootTreeNode = getRootTreeNode();
 
-                UserTotalVisitor visitor = new UserTotalVisitor();
-                ((AbstractUser) selectedNode).accept(visitor);
-                String message = "Total number of individual users within "
-                        + ((AbstractUser) selectedNode).getID() + ": "
-                        + Integer.toString(visitor.visitUser(((AbstractUser) selectedNode)));
+                VisitorTotalUsers visitor = new VisitorTotalUsers();
+                ((AbstractUser) rootTreeNode).accept(visitor);
+                String message = "Total number of users: "
+                        + Integer.toString(visitor.visitUser(((AbstractUser) rootTreeNode)));
 
                 JOptionPane.showMessageDialog(frame, message,
-                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
+                ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
 
         });
     }
 
     /**
-     * Initializes action listener for GroupTotalButton.  Opens message
-     * dialog box for the specified AbstractUser.
-     *
-     * Displays total number of GroupUsers contained within the
-     * specified AbstractUser.  If a Group is selected, the total excludes
-     * the selected AbstractUser.
+     * Displays total number of GroupUsers contained within Root.
      */
     private void initializeGroupTotalButtonActionListener() {
         groupTotalButton.addActionListener(new ActionListener() {
@@ -111,28 +110,22 @@ public class ShowInfoPanel extends ControlPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // get AbstractUser selected in TreePanel
-                DefaultMutableTreeNode selectedNode = getSelectedNode();
+                DefaultMutableTreeNode rootTreeNode = getRootTreeNode();
 
-                GroupTotalVisitor visitor = new GroupTotalVisitor();
-                ((AbstractUser) selectedNode).accept(visitor);
+                VisitorGroupTotals visitor = new VisitorGroupTotals();
+                ((AbstractUser) rootTreeNode).accept(visitor);
                 String message = "Total number of groups within "
-                        + ((AbstractUser) selectedNode).getID() + ": "
-                        + Integer.toString(visitor.visitUser(((AbstractUser) selectedNode)));
+                        + ((AbstractUser) rootTreeNode).getUserName() + ": "
+                        + Integer.toString(visitor.visitUser(((AbstractUser) rootTreeNode)));
 
                 JOptionPane.showMessageDialog(frame, message,
-                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
+                ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
         });
     }
 
     /**
-     * Initializes action listener for MessagesTotalButton.  Opens
-     * message dialog box for the specified AbstractUser.
-     *
-     * Displays the total number of messages sent by the specified
-     * AbstractUser.  If a Group is selected, the total represents the total
-     * number of messages sent by all SingleUsers that are descendants
-     * of the specified AbstractUser.
+     * Displays the total number of messages sent in app.
      */
     private void initializeMessagesTotalButtonActionListener() {
         messagesTotalButton.addActionListener(new ActionListener() {
@@ -140,28 +133,21 @@ public class ShowInfoPanel extends ControlPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // get AbstractUser selected in TreePanel
-                DefaultMutableTreeNode selectedNode = getSelectedNode();
+                DefaultMutableTreeNode rootTreeNode = getRootTreeNode();
 
-                MessagesTotalVisitor visitor = new MessagesTotalVisitor();
-                ((AbstractUser) selectedNode).accept(visitor);
-                String message = "Total number of messages sent by "
-                        + ((AbstractUser) selectedNode).getID() + ": "
-                        + Integer.toString(visitor.visitUser(((AbstractUser) selectedNode)));
+                VisitorTotalMessages visitor = new VisitorTotalMessages();
+                ((AbstractUser) rootTreeNode).accept(visitor);
+                String message = "Total number of messages sent: "
+                        + Integer.toString(visitor.visitUser(((AbstractUser) rootTreeNode)));
 
                 JOptionPane.showMessageDialog(frame, message,
-                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
+                ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
         });
     }
 
     /**
-     * Initializes action listener for PositivePercentageButton.  Opens
-     * message dialog box for the specified AbstractUser.
-     *
-     * Displays the percentage of positive messages sent by the specified
-     * AbstractUser.  If a Group is selected, the total represents the total
-     * number of positive messages sent by all SingleUsers that are descendants
-     * of the specified AbstractUser.
+     * Displays percentage of positive messages sent in app.
      */
     private void initializePositivePercentageButtonActionListener() {
         positivePercentageButton.addActionListener(new ActionListener() {
@@ -169,15 +155,15 @@ public class ShowInfoPanel extends ControlPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // get AbstractUser selected in TreePanel
-                DefaultMutableTreeNode selectedNode = getSelectedNode();
+                DefaultMutableTreeNode rootTreeNode = getRootTreeNode();
 
-                PositiveTotalVisitor positiveCountVisitor = new PositiveTotalVisitor();
-                ((AbstractUser) selectedNode).accept(positiveCountVisitor);
-                int positiveCount = positiveCountVisitor.visitUser(((AbstractUser) selectedNode));
+                VisitorPositivePercentage positiveCountVisitor = new VisitorPositivePercentage();
+                ((AbstractUser) rootTreeNode).accept(positiveCountVisitor);
+                int positiveCount = positiveCountVisitor.visitUser(((AbstractUser) rootTreeNode));
 
-                MessagesTotalVisitor messageCountVisitor = new MessagesTotalVisitor();
-                ((AbstractUser) selectedNode).accept(messageCountVisitor);
-                int messageCount = messageCountVisitor.visitUser(((AbstractUser) selectedNode));
+                VisitorTotalMessages messageCountVisitor = new VisitorTotalMessages();
+                ((AbstractUser) rootTreeNode).accept(messageCountVisitor);
+                int messageCount = messageCountVisitor.visitUser(((AbstractUser) rootTreeNode));
 
                 // calculate percentage, set percentage to 0.00 if no messages have yet been sent
                 double percentage = 0;
@@ -186,12 +172,11 @@ public class ShowInfoPanel extends ControlPanel {
                 }
                 String percentageString = String.format("%.2f", percentage);
 
-                String message = "Percentage of positive messages sent by "
-                        + ((AbstractUser) selectedNode).getID() + ": "
+                String message = "Percentage of positive messages sent : "
                         + percentageString + "%";
 
                 JOptionPane.showMessageDialog(frame, message,
-                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
+                ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
         });
     }

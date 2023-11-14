@@ -23,7 +23,7 @@ public class TreePanel extends JPanel {
 
     public TreePanel(DefaultMutableTreeNode root) {
         super(new GridLayout(1,0));
-
+        
         rootNode = root;
         initializeComponents();
         addComponents();
@@ -44,11 +44,11 @@ public class TreePanel extends JPanel {
     }
 
     /**
-     * Add {@link Group} to the currently selected {@link AbstractUser}.
-     * If the currently selected {@link AbstractUser} is a {@link User},
-     * the {@link Group} is added as a sibling.
+     * Add Group to the currently selected Abstract User.
+     * If the currently selected AbstractUser is a User,
+     * the Group is added as a sibling to the User.
      */
-    public void addGroupUser(DefaultMutableTreeNode child) {
+    public void addGroup(DefaultMutableTreeNode child) {
         DefaultMutableTreeNode parentNode = null;
         TreePath parentPath = tree.getSelectionPath();
 
@@ -63,15 +63,15 @@ public class TreePanel extends JPanel {
         if (parentNode.getUserObject().getClass() == User.class) {
             parentNode = (DefaultMutableTreeNode) parentNode.getParent();
         }
-        addUser(parentNode, child, true);
+        addAbstractUser(parentNode, child, true);
     }
 
     /**
-     * Add {@link User} to the currently selected {@link AbstractUser}.
-     * If the currently selected {@link AbstractUser} is a {@link User},
-     * the {@link User} is added as a sibling.
+     * Add User to the currently selected AbstractUser.
+     * If the currently selected AbstractUser is a User,
+     * the User is added as a sibling.
      */
-    public void addSingleUser(DefaultMutableTreeNode child) {
+    public void addUser(DefaultMutableTreeNode child) {
         DefaultMutableTreeNode parentNode = null;
         TreePath parentPath = tree.getSelectionPath();
 
@@ -86,17 +86,13 @@ public class TreePanel extends JPanel {
         if (parentNode.getUserObject().getClass() == User.class) {
             parentNode = (DefaultMutableTreeNode) parentNode.getParent();
         }
-        addUser(parentNode, child, true);
+        addAbstractUser(parentNode, child, true);
     }
 
-    /*
-     * Private methods
-     */
-
     /**
-     * Add specified child {@link AbstractUser} to specified parent {@link AbstractUser}.
+     * Add specified child AbstractUser  to specified parent AbstractUser.
      */
-    private void addUser(DefaultMutableTreeNode parent, DefaultMutableTreeNode child, boolean shouldBeVisible) {
+    private void addAbstractUser(DefaultMutableTreeNode parent, DefaultMutableTreeNode child, boolean shouldBeVisible) {
         DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
 
         if (parent == null) {

@@ -1,5 +1,5 @@
 /*
- * This implements Subject from the Observer Design Pattern, checked
+ * This implements Subject from the Observer Design Pattern
  */
 public interface Subject {
 

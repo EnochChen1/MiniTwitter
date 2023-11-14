@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 public class Driver extends JFrame {
 
     /**
-     * Launch the application.
+     * Launch the app, makes sure any errors will show up on terminal
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

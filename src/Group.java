@@ -7,28 +7,27 @@ import java.util.Map;
  */
 public class Group extends AbstractUser {
 
-    private Map<String,AbstractUser> groupUsers;
+    private Map<String,AbstractUser> groups;
 
     /**
      * Group icon is only distinguished from User after a AbstractUser
      * is added to the Group.
      */
-    public Group(String id) {
-        super(id);
-        groupUsers = new HashMap<String,AbstractUser>();
+    public Group(String userName) {
+        super(userName);
+        groups = new HashMap<String,AbstractUser>();
     }
 
-    public Map<String,AbstractUser> getGroupUsers() {
-        return groupUsers;
+    public Map<String,AbstractUser> getGroups() {
+        return groups;
     }
 
     /**
-     * Adds {@link AbstractUser} to list of {@link AbstractUser}s in this {@link Group}
-     * if not already present.
+     * Adds Username to group, if it is not in the group
      */
     public AbstractUser addUserInGroup(AbstractUser user) {
-        if (!this.contains(user.getID())) {
-            this.groupUsers.put(user.getID(), user);
+        if (!this.contains(user.getUserName())) {
+            this.groups.put(user.getUserName(), user);
         }
         return this;
     }
@@ -41,10 +40,10 @@ public class Group extends AbstractUser {
      * Checks if this {@link Group} contains specified AbstractUser ID.
      */
     @Override
-    public boolean contains(String id) {
+    public boolean contains(String userName) {
         boolean contains = false;
-        for (AbstractUser user : groupUsers.values()) {
-            if (user.contains(id)) {
+        for (AbstractUser user : groups.values()) {
+            if (user.contains(userName)) {
                 contains = true;
             }
         }
@@ -52,41 +51,39 @@ public class Group extends AbstractUser {
     }
 
     /**
-     * Returns number of {@link User}s in the {@link Group}.
+     * Returns number of users in the group
      */
     @Override
-    public int getSingleUserCount() {
+    public int getUserCount() {
         int count = 0;
-        for (AbstractUser user : this.groupUsers.values()) {
-            count += user.getSingleUserCount();
+        for (AbstractUser user : this.groups.values()) {
+            count += user.getUserCount();
         }
         return count;
     }
 
     /**
-     * Returns number of {@link Group}s that are descendants of
-     * this {@link Group}.  Group count does not include {@code this}
-     * {@link Group}.
+     * returns number of groups in this group
      */
     @Override
-    public int getGroupUserCount() {
+    public int getGroupCount() {
         int count = 0;
-        for (AbstractUser user : this.groupUsers.values()) {
+        for (AbstractUser user : this.groups.values()) {
             if (user.getClass() == Group.class) {
                 ++count;
-                count += user.getGroupUserCount();
+                count += user.getGroupCount();
             }
         }
         return count;
     }
 
     /**
-     * Returns total number of messages sent by members of this {@link Group}.
+     * Returns total number of messages sent by users of this group.
      */
     @Override
     public int getMessageCount() {
         int msgCount = 0;
-        for (AbstractUser user : this.groupUsers.values()) {
+        for (AbstractUser user : this.groups.values()) {
             msgCount += user.getMessageCount();
         }
         return msgCount;
@@ -102,7 +99,7 @@ public class Group extends AbstractUser {
      */
     @Override
     public void update(Subject subject) {
-        for (AbstractUser user : groupUsers.values()) {
+        for (AbstractUser user : groups.values()) {
             ((Observer) user).update(subject);
         }
     }
@@ -113,28 +110,10 @@ public class Group extends AbstractUser {
 
     @Override
     public void accept(Visitor visitor) {
-        for (AbstractUser user : groupUsers.values()) {
+        for (AbstractUser user : groups.values()) {
             user.accept(visitor);
         }
         visitor.visitGroupUser(this);
-    }
-
-    /*
-     * Private methods
-     */
-
-    /**
-     * Returns true if this Group contains one or more
-     * Group as a descendant.
-     */
-    private boolean containsGroupUser() {
-        boolean containsGroup = false;
-        for (AbstractUser user : this.groupUsers.values()) {
-            if (user.getClass() == Group.class) {
-                containsGroup = true;
-            }
-        }
-        return containsGroup;
     }
 
 }

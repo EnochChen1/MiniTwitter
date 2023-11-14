@@ -1,15 +1,19 @@
-import javax.swing.InputMap;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
-import javax.swing.tree.DefaultMutableTreeNode;
-
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.KeyEvent;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.GridBagConstraints;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+
+/*
+ * This class implements Singleton Pattern, making sure there is only one Admin Panel at a time.
+ * This also adds all of the components from the other classes
+ * To create the actual admin panel view
+ */
 
 public class AdminControlPanel extends ControlPanel {
 
@@ -24,6 +28,11 @@ public class AdminControlPanel extends ControlPanel {
     private DefaultMutableTreeNode root;
     private Map<String, Observer> allUsers;
 
+    /*
+     * Implementation of the Singleton Pattern
+     * Makes sure that only one Admin Control Panel can exist
+     * at the same time
+     */
     public static AdminControlPanel getInstance() {
         if (INSTANCE == null) {
             synchronized (Driver.class) {
@@ -34,10 +43,6 @@ public class AdminControlPanel extends ControlPanel {
         }
         return INSTANCE;
     }
-
-    /*
-     * Private methods
-     */
 
     private AdminControlPanel() {
         super();
@@ -54,28 +59,23 @@ public class AdminControlPanel extends ControlPanel {
     }
 
     private void initializeComponents() {
-        frame = new JFrame("Mini-Twitter App");
+        frame = new JFrame("Mini-Twitter");
         formatFrame();
 
         allUsers = new HashMap<String, Observer>();
         root = new Group("Root");
-        allUsers.put(((AbstractUser) root).getID(), (Observer) this.root);
+        allUsers.put(((AbstractUser) root).getUserName(), (Observer) this.root);
 
         treePanel = new TreePanel(root);
-        addUserPanel = new AddUserPanel(treePanel, allUsers);
-        openUserViewPanel = new OpenUserViewPanel(treePanel, allUsers);
-        showInfoPanel = new ShowInfoPanel(treePanel);
-
-        // set buttons to respond to ENTER key, remove default response to SPACE key
-        UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
-        InputMap im = (InputMap) UIManager.get("Button.focusInputMap");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "none");
+        addUserPanel = new AddUserButtons(treePanel, allUsers);
+        openUserViewPanel = new OpenUserViewButton(treePanel, allUsers);
+        showInfoPanel = new ShowInfoButtons(treePanel);
     }
 
     private void formatFrame() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
-        frame.setSize(800, 400);
+        frame.setSize(1000, 600);
         frame.setVisible(true);
     }
 

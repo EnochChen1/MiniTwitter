@@ -1,4 +1,4 @@
-public class GroupTotalVisitor implements Visitor {
+public class VisitorPositivePercentage implements Visitor {
 
     @Override
     public int visitUser(AbstractUser user) {
@@ -15,17 +15,14 @@ public class GroupTotalVisitor implements Visitor {
 
     @Override
     public int visitSingleUser(AbstractUser user) {
-        return 0;
+        return ((User) user).getPositiveMessageCount();
     }
 
     @Override
     public int visitGroupUser(AbstractUser user) {
         int count = 0;
 
-        for (AbstractUser u : ((Group) user).getGroupUsers().values()) {
-            if (u.getClass() == Group.class) {
-                ++count;
-            }
+        for (AbstractUser u : ((Group) user).getGroups().values()) {
             count += visitUser(u);
         }
 
