@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
@@ -72,7 +71,6 @@ public class ShowInfoButtons extends ControlPanel {
     */
 
     private DefaultMutableTreeNode getRootTreeNode() {
-        JTree tree = ((TreePanel) treePanel).getTree();
         DefaultMutableTreeNode rootTreeNode = ((TreePanel) treePanel).getRoot();
         return rootTreeNode;
     }
