@@ -1,40 +1,49 @@
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /*
  * This is the abstract class that implements Composite Design, checked
  */
 
-public abstract class AbstractUser extends DefaultMutableTreeNode implements Observer{
-    private String userName;
+public abstract class AbstractUser extends DefaultMutableTreeNode implements Observer {
+
+    private String id;
     private int messageCount;
 
-    public abstract boolean contains(String userName);
-    public abstract int getUserCount();
-    public abstract int getGroupCount();
+    public abstract boolean contains(String id);
+    public abstract int getSingleUserCount();
+    public abstract int getGroupUserCount();
 
-
-    public AbstractUser(String userName) {
-        super(userName);
-        this.userName = userName;
+    public AbstractUser(String id) {
+        super(id);
+        this.id = id;
         this.setMessageCount(0);
     }
 
-    public String getUserName() {
-        return userName;
+    /**
+     * Returns the user ID of this AbstractUser.
+     */
+    public String getID() {
+        return id;
     }
 
-    //needed to get total number of Tweet Messages in all user's news feed
+    /**
+     * Returns the total number of messages sent by this AbstractUser.
+     */
     public int getMessageCount() {
-        return this.messageCount;
+        return messageCount;
     }
 
-    //This is needed to set the message count for a new user to 0
+    /**
+     * Sets the total number of messages sent by this AbstractUser
+     * to the specified integer.
+     */
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
+
+    /*
+     * Visitor methods
+     */
 
     public abstract void accept(Visitor visitor);
 

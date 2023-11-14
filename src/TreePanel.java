@@ -10,6 +10,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+/*
+ *  Tree for the mini twitter app
+ *  checked
+ */
 public class TreePanel extends JPanel {
 
     private DefaultMutableTreeNode rootNode;
@@ -39,45 +43,50 @@ public class TreePanel extends JPanel {
         return this.rootNode;
     }
 
-    public void addGroup(DefaultMutableTreeNode child) {
+    /**
+     * Add {@link Group} to the currently selected {@link AbstractUser}.
+     * If the currently selected {@link AbstractUser} is a {@link User},
+     * the {@link Group} is added as a sibling.
+     */
+    public void addGroupUser(DefaultMutableTreeNode child) {
         DefaultMutableTreeNode parentNode = null;
         TreePath parentPath = tree.getSelectionPath();
 
-        // set parent as selected User, set as root if no User is selected
+        // set parent as selected AbstractUser, set as root if no AbstractUser is selected
         if (parentPath == null) {
             parentNode = rootNode;
         } else {
             parentNode = (DefaultMutableTreeNode) parentPath.getLastPathComponent();
         }
 
-        // add to parent GroupUser if selected node is a SingleUser
+        // add to parent Group if selected node is a User
         if (parentNode.getUserObject().getClass() == User.class) {
             parentNode = (DefaultMutableTreeNode) parentNode.getParent();
         }
-        addAbstractUser(parentNode, child, true);
+        addUser(parentNode, child, true);
     }
 
     /**
-     * Add {@link SingleUser} to the currently selected {@link User}.
-     * If the currently selected {@link User} is a {@link SingleUser},
-     * the {@link SingleUser} is added as a sibling.
+     * Add {@link User} to the currently selected {@link AbstractUser}.
+     * If the currently selected {@link AbstractUser} is a {@link User},
+     * the {@link User} is added as a sibling.
      */
-    public void addUser(DefaultMutableTreeNode child) {
+    public void addSingleUser(DefaultMutableTreeNode child) {
         DefaultMutableTreeNode parentNode = null;
         TreePath parentPath = tree.getSelectionPath();
 
-        // set parent as selected User, set as root if no User is selected
+        // set parent as selected AbstractUser, set as root if no AbstractUser is selected
         if (parentPath == null) {
             parentNode = rootNode;
         } else {
             parentNode = (DefaultMutableTreeNode) parentPath.getLastPathComponent();
         }
 
-        // add to parent GroupUser if selected node is a SingleUser
+        // add to parent Group if selected node is a User
         if (parentNode.getUserObject().getClass() == User.class) {
             parentNode = (DefaultMutableTreeNode) parentNode.getParent();
         }
-        addAbstractUser(parentNode, child, true);
+        addUser(parentNode, child, true);
     }
 
     /*
@@ -85,9 +94,9 @@ public class TreePanel extends JPanel {
      */
 
     /**
-     * Add specified child {@link User} to specified parent {@link User}.
+     * Add specified child {@link AbstractUser} to specified parent {@link AbstractUser}.
      */
-    private void addAbstractUser(DefaultMutableTreeNode parent, DefaultMutableTreeNode child, boolean shouldBeVisible) {
+    private void addUser(DefaultMutableTreeNode parent, DefaultMutableTreeNode child, boolean shouldBeVisible) {
         DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
 
         if (parent == null) {

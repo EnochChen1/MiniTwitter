@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class OpenUserPanel extends ControlPanel {
+public class OpenUserViewPanel extends ControlPanel {
 
     private JButton openUserViewButton;
     private JPanel spacerPanel;
@@ -23,9 +23,9 @@ public class OpenUserPanel extends ControlPanel {
     private static JFrame frame;
 
     /**
-     * Create the panel.  Assume can only open a UserViewPanel for SingleUser.
+     * Create the panel.  Assume can only open a UserViewPanel for User.
      */
-    public OpenUserPanel(JPanel treePanel, Map<String, Observer> allUsers) {
+    public OpenUserViewPanel(JPanel treePanel, Map<String, Observer> allUsers) {
         super();
 
         this.treePanel = treePanel;
@@ -54,7 +54,7 @@ public class OpenUserPanel extends ControlPanel {
     }
 
     /**
-     * Returns the selected User in the TreePanel.
+     * Returns the selected AbstractUser in the TreePanel.
      */
     private DefaultMutableTreeNode getSelectedNode() {
         JTree tree = ((TreePanel) treePanel).getTree();
@@ -72,27 +72,30 @@ public class OpenUserPanel extends ControlPanel {
 
     /**
      * Initializes action listener for OpenUserViewButton.  Opens UserViewPanel
-     * of the selected SingleUser, and only one UserViewPanel can be open for a
-     * SingleUser at any given time.  UserViewPanel cannot be opened for GroupUser.
+     * of the selected User, and only one UserViewPanel can be open for a
+     * User at any given time.  UserViewPanel cannot be opened for Group.
      */
     private void initializeOpenUserViewActionListener() {
         openUserViewButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // get User selected in TreePanel
+                // get AbstractUser selected in TreePanel
                 DefaultMutableTreeNode selectedNode = getSelectedNode();
 
-                // open user view UI on click, only open one window per User
-                if (!allUsers.containsKey(((AbstractUser) selectedNode).getUserName())) {
-                    JOptionPane.showMessageDialog(frame, "No such user exists", "Error", JOptionPane.ERROR_MESSAGE);
+                // open user view UI on click, only open one window per AbstractUser
+                if (!allUsers.containsKey(((AbstractUser) selectedNode).getID())) {
+                    JOptionPane.showMessageDialog(frame, "No such user exists.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (selectedNode.getClass() == Group.class) {
-                    JOptionPane.showMessageDialog(frame, "User view does not exist for a group", "Error", JOptionPane.ERROR_MESSAGE);
-                } else if (openPanels.containsKey(((AbstractUser) selectedNode).getUserName())) {
-                    JOptionPane.showMessageDialog(frame, "User view is already open for"+((AbstractUser) selectedNode).getUserName(), "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(frame, "User view does not exist for a group.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (openPanels.containsKey(((AbstractUser) selectedNode).getID())) {
+                            JOptionPane.showMessageDialog(frame, "User view is already open for "
+                            +((AbstractUser) selectedNode).getID(),"Error", JOptionPane.ERROR_MESSAGE);
                 } else if (selectedNode.getClass() == User.class) {
                     UserViewPanel userView = new UserViewPanel(allUsers, openPanels, selectedNode);
-                    openPanels.put(((AbstractUser) selectedNode).getUserName(), userView);
+                    openPanels.put(((AbstractUser) selectedNode).getID(), userView);
                 }
             }
         });

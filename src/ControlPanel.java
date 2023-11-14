@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 
 public abstract class ControlPanel extends JPanel {
+
     private static final Insets insets = new Insets(0, 0, 0, 0);
 
     public ControlPanel() {

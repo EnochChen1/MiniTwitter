@@ -59,12 +59,12 @@ public class AdminControlPanel extends ControlPanel {
 
         allUsers = new HashMap<String, Observer>();
         root = new Group("Root");
-        allUsers.put(((AbstractUser) root).getUserName(), (Observer) this.root);
+        allUsers.put(((AbstractUser) root).getID(), (Observer) this.root);
 
         treePanel = new TreePanel(root);
-        addUserPanel = new AddUsersPanel(treePanel, allUsers);
-        openUserViewPanel = new OpenUserPanel(treePanel, allUsers);
-        showInfoPanel = new InfoPanel(treePanel);
+        addUserPanel = new AddUserPanel(treePanel, allUsers);
+        openUserViewPanel = new OpenUserViewPanel(treePanel, allUsers);
+        showInfoPanel = new ShowInfoPanel(treePanel);
 
         // set buttons to respond to ENTER key, remove default response to SPACE key
         UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);

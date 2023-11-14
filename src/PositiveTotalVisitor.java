@@ -1,28 +1,28 @@
-public class VisitorTotalPositive implements Visitor {
+public class PositiveTotalVisitor implements Visitor {
 
     @Override
-    public int visitAbstractUser(AbstractUser user) {
+    public int visitUser(AbstractUser user) {
         int count = 0;
 
         if (user.getClass() == User.class) {
-            count += visitUser(user);
+            count += visitSingleUser(user);
         } else if (user.getClass() == Group.class) {
-            count += visitGroup(user);
+            count += visitGroupUser(user);
         }
 
         return count;
     }
 
     @Override
-    public int visitUser(AbstractUser user) {
+    public int visitSingleUser(AbstractUser user) {
         return ((User) user).getPositiveMessageCount();
     }
 
     @Override
-    public int visitGroup(AbstractUser user) {
+    public int visitGroupUser(AbstractUser user) {
         int count = 0;
 
-        for (AbstractUser u : ((Group) user).getGroups().values()) {
+        for (AbstractUser u : ((Group) user).getGroupUsers().values()) {
             count += visitUser(u);
         }
 

@@ -10,7 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
-public class InfoPanel extends ControlPanel {
+public class ShowInfoPanel extends ControlPanel {
 
     private JButton userTotalButton;
     private JButton groupTotalButton;
@@ -23,7 +23,7 @@ public class InfoPanel extends ControlPanel {
     /**
      * Create the panel.
      */
-    public InfoPanel(JPanel treePanel) {
+    public ShowInfoPanel(JPanel treePanel) {
         super();
 
         this.treePanel = treePanel;
@@ -53,7 +53,7 @@ public class InfoPanel extends ControlPanel {
     }
 
     /**
-     * Returns the selected User in the TreePanel.
+     * Returns the selected AbstractUser in the TreePanel.
      */
     private DefaultMutableTreeNode getSelectedNode() {
         JTree tree = ((TreePanel) treePanel).getTree();
@@ -71,110 +71,111 @@ public class InfoPanel extends ControlPanel {
 
     /**
      * Initializes action listener for UserTotalButton.  Opens message
-     * dialog box for the specified User.
+     * dialog box for the specified AbstractUser.
      *
      * Displays total number of SingleUsers contained within
-     * the specified User.
+     * the specified AbstractUser.
      */
     private void initializeUserTotalButtonActionListener() {
         userTotalButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // get User selected in TreePanel
+                // get AbstractUser selected in TreePanel
                 DefaultMutableTreeNode selectedNode = getSelectedNode();
 
-                VisitorTotalUsers visitor = new VisitorTotalUsers();
+                UserTotalVisitor visitor = new UserTotalVisitor();
                 ((AbstractUser) selectedNode).accept(visitor);
                 String message = "Total number of individual users within "
-                        + ((AbstractUser) selectedNode).getUserName() + ": "
+                        + ((AbstractUser) selectedNode).getID() + ": "
                         + Integer.toString(visitor.visitUser(((AbstractUser) selectedNode)));
 
-                        JOptionPane.showMessageDialog(frame, message, ((AbstractUser) selectedNode).getUserName()+" Information", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, message,
+                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
+
         });
     }
 
     /**
      * Initializes action listener for GroupTotalButton.  Opens message
-     * dialog box for the specified User.
+     * dialog box for the specified AbstractUser.
      *
      * Displays total number of GroupUsers contained within the
-     * specified User.  If a GroupUser is selected, the total excludes
-     * the selected User.
+     * specified AbstractUser.  If a Group is selected, the total excludes
+     * the selected AbstractUser.
      */
     private void initializeGroupTotalButtonActionListener() {
         groupTotalButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // get User selected in TreePanel
+                // get AbstractUser selected in TreePanel
                 DefaultMutableTreeNode selectedNode = getSelectedNode();
 
-                VisitorTotalGroups visitor = new VisitorTotalGroups();
+                GroupTotalVisitor visitor = new GroupTotalVisitor();
                 ((AbstractUser) selectedNode).accept(visitor);
                 String message = "Total number of groups within "
-                        + ((AbstractUser) selectedNode).getUserName() + ": "
+                        + ((AbstractUser) selectedNode).getID() + ": "
                         + Integer.toString(visitor.visitUser(((AbstractUser) selectedNode)));
 
-                JOptionPane.showMessageDialog(frame, message, ((AbstractUser) selectedNode).getUserName()+" Information", JOptionPane.INFORMATION_MESSAGE);
-
-
+                JOptionPane.showMessageDialog(frame, message,
+                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
         });
     }
 
     /**
      * Initializes action listener for MessagesTotalButton.  Opens
-     * message dialog box for the specified User.
+     * message dialog box for the specified AbstractUser.
      *
      * Displays the total number of messages sent by the specified
-     * User.  If a GroupUser is selected, the total represents the total
+     * AbstractUser.  If a Group is selected, the total represents the total
      * number of messages sent by all SingleUsers that are descendants
-     * of the specified User.
+     * of the specified AbstractUser.
      */
     private void initializeMessagesTotalButtonActionListener() {
         messagesTotalButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // get User selected in TreePanel
+                // get AbstractUser selected in TreePanel
                 DefaultMutableTreeNode selectedNode = getSelectedNode();
 
-                VisitorTotalMessages visitor = new VisitorTotalMessages();
+                MessagesTotalVisitor visitor = new MessagesTotalVisitor();
                 ((AbstractUser) selectedNode).accept(visitor);
                 String message = "Total number of messages sent by "
-                        + ((AbstractUser) selectedNode).getUserName() + ": "
+                        + ((AbstractUser) selectedNode).getID() + ": "
                         + Integer.toString(visitor.visitUser(((AbstractUser) selectedNode)));
 
-                JOptionPane.showMessageDialog(frame, message, ((AbstractUser) selectedNode).getUserName()+" Information", JOptionPane.INFORMATION_MESSAGE);
-
+                JOptionPane.showMessageDialog(frame, message,
+                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
         });
     }
 
     /**
      * Initializes action listener for PositivePercentageButton.  Opens
-     * message dialog box for the specified User.
+     * message dialog box for the specified AbstractUser.
      *
      * Displays the percentage of positive messages sent by the specified
-     * User.  If a GroupUser is selected, the total represents the total
+     * AbstractUser.  If a Group is selected, the total represents the total
      * number of positive messages sent by all SingleUsers that are descendants
-     * of the specified User.
+     * of the specified AbstractUser.
      */
     private void initializePositivePercentageButtonActionListener() {
         positivePercentageButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // get User selected in TreePanel
+                // get AbstractUser selected in TreePanel
                 DefaultMutableTreeNode selectedNode = getSelectedNode();
 
-                VisitorTotalPositive positiveCountVisitor = new VisitorTotalPositive();
+                PositiveTotalVisitor positiveCountVisitor = new PositiveTotalVisitor();
                 ((AbstractUser) selectedNode).accept(positiveCountVisitor);
                 int positiveCount = positiveCountVisitor.visitUser(((AbstractUser) selectedNode));
 
-                VisitorTotalMessages messageCountVisitor = new VisitorTotalMessages();
+                MessagesTotalVisitor messageCountVisitor = new MessagesTotalVisitor();
                 ((AbstractUser) selectedNode).accept(messageCountVisitor);
                 int messageCount = messageCountVisitor.visitUser(((AbstractUser) selectedNode));
 
@@ -186,11 +187,11 @@ public class InfoPanel extends ControlPanel {
                 String percentageString = String.format("%.2f", percentage);
 
                 String message = "Percentage of positive messages sent by "
-                        + ((AbstractUser) selectedNode).getUserName() + ": "
+                        + ((AbstractUser) selectedNode).getID() + ": "
                         + percentageString + "%";
 
-                JOptionPane.showMessageDialog(frame, message, ((AbstractUser) selectedNode).getUserName()+" Information", JOptionPane.INFORMATION_MESSAGE);
-
+                JOptionPane.showMessageDialog(frame, message,
+                ((AbstractUser) selectedNode).getID() + " information", JOptionPane.INFORMATION_MESSAGE );
             }
         });
     }

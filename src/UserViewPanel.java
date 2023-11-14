@@ -70,7 +70,7 @@ public class UserViewPanel extends ControlPanel {
         constraints = new GridBagConstraints();
         constraints.ipady = 100;
 
-        toFollowTextField = new JTextField("Username");
+        toFollowTextField = new JTextField("User ID");
         followUserButton = new JButton("Follow User");
         initializeFollowUserButtonActionListener();
 
@@ -110,13 +110,13 @@ public class UserViewPanel extends ControlPanel {
         frame.setLayout(new GridBagLayout());
         frame.setSize(800, 400);
         frame.setVisible(true);
-        frame.setTitle(((AbstractUser) user).getUserName());
+        frame.setTitle(((AbstractUser) user).getID());
 
         // allows UserViewPanel to be reopened after it has been closed
         frame.addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
-                openPanels.remove(((AbstractUser) user).getUserName());
+                openPanels.remove(((AbstractUser) user).getID());
             }
         });
     }
@@ -155,14 +155,14 @@ public class UserViewPanel extends ControlPanel {
     /**
      * Initializes action listener for PostTweetButton.  Sends
      * specified message to the news feeds of the followers of
-     * this User.
+     * this AbstractUser.
      */
     private void initializePostTweetButtonActionListener() {
         postTweetButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ((User) user).Tweet(tweetMessageTextArea.getText());
+                ((User) user).sendMessage(tweetMessageTextArea.getText());
 
                 for (JPanel panel : openPanels.values()) {
                     ((UserViewPanel) panel).updateNewsFeedTextArea();
@@ -173,8 +173,8 @@ public class UserViewPanel extends ControlPanel {
 
     /**
      * Initializes action listener for FollowUserButton.  Adds this
-     * User as a follower of the specified SingleUser.  Cannot follow
-     * a GroupUser.
+     * AbstractUser as a follower of the specified User.  Cannot follow
+     * a Group.
      */
     private void initializeFollowUserButtonActionListener() {
         followUserButton.addActionListener(new ActionListener() {
@@ -184,9 +184,13 @@ public class UserViewPanel extends ControlPanel {
                 AbstractUser toFollow = (AbstractUser) allUsers.get(toFollowTextField.getText());
 
                 if (!allUsers.containsKey(toFollowTextField.getText())) {
-                    JOptionPane.showMessageDialog(frame, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(frame, "User does not exist.",
+                "Error", JOptionPane.ERROR_MESSAGE );
+
                 } else if (toFollow.getClass() == Group.class) {
-                    JOptionPane.showMessageDialog(frame, "Cannot follow group", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(frame, "Cannot follow a group.",
+                "Error", JOptionPane.ERROR_MESSAGE );
+                            
                 } else if (allUsers.containsKey(toFollowTextField.getText())) {
                     ((Subject) toFollow).attach((Observer) user);
                 }
@@ -198,3 +202,4 @@ public class UserViewPanel extends ControlPanel {
     }
 
 }
+
