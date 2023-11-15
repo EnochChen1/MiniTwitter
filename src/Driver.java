@@ -11,7 +11,7 @@ public class Driver extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    AdminControlPanel frame = AdminControlPanel.getInstance();
+                    AdminControlPanel.getInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
