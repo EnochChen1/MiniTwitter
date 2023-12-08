@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -72,6 +74,7 @@ public class UserViewPanel extends ControlPanel {
         followUserButton = new JButton("Follow User");
         followUserButton.setBackground(Color.cyan);
         initializeFollowUserButtonActionListener();
+        
 
         currentFollowingTextArea = new JTextArea("Current Following: ");
         formatTextArea(currentFollowingTextArea);
@@ -101,16 +104,22 @@ public class UserViewPanel extends ControlPanel {
     private void formatTextArea(JTextArea textArea) {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setRows(8);
+        textArea.setRows(4);
         textArea.setEditable(false);
     }
 
     private void formatFrame() {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
-        frame.setSize(800, 400);
+        frame.setSize(1000, 500);
         frame.setVisible(true);
-        frame.setTitle(((AbstractUser) user).getUserName());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+        long creationTime = ((AbstractUser) user).getCreationTime();
+        Date resultdate = new Date(creationTime);
+
+
+        frame.setTitle(((AbstractUser) user).getUserName()+"    : Created at " + sdf.format(resultdate));
 
         // allows UserViewPanel to be reopened after it has been closed
         frame.addWindowListener(new WindowAdapter() {

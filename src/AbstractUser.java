@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /*
@@ -11,6 +14,7 @@ public abstract class AbstractUser extends DefaultMutableTreeNode implements Obs
 
     private String userName;
     private int messageCount;
+    private long creationTime;
 
     public abstract boolean contains(String userName);
     public abstract int getUserCount();
@@ -20,6 +24,7 @@ public abstract class AbstractUser extends DefaultMutableTreeNode implements Obs
         super(userName);
         this.userName = userName;
         this.setMessageCount(0);
+        creationTime = System.currentTimeMillis();        
     }
 
     /**
@@ -34,6 +39,14 @@ public abstract class AbstractUser extends DefaultMutableTreeNode implements Obs
      */
     public int getMessageCount() {
         return messageCount;
+    }
+
+    /*
+     * Returns time user was created
+     */
+
+    public long getCreationTime() {
+        return creationTime;
     }
 
     /**
