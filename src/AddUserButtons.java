@@ -77,6 +77,10 @@ public class AddUserButtons extends ControlPanel {
                 if (allUsers.containsKey(userName.getText())) {
                     JOptionPane.showMessageDialog(frame, 
                      "Username already exists, Please choose a different username.", "Error"
+                , JOptionPane.ERROR_MESSAGE);
+                } else if(userName.getText().contains(" ")) {
+                    JOptionPane.showMessageDialog(frame, 
+                     "Username cannot have spaces, Please choose a different username.", "Error"
                 , JOptionPane.ERROR_MESSAGE );
                 } else {
                     Observer child = new User(userName.getText());
