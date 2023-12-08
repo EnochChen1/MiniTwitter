@@ -55,7 +55,7 @@ public class AdminControlPanel extends ControlPanel {
         addComponent(frame, treePanel, 0, 0, 1, 6, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(frame, addUserPanel, 1, 0, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(frame, openUserViewPanel, 1, 2, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        addComponent(frame, showInfoPanel, 1, 4, 2, 2, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(frame, showInfoPanel, 1, 4, 2, 3, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
     }
 
     private void initializeComponents() {

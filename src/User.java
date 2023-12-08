@@ -1,7 +1,9 @@
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 /*
@@ -23,6 +25,8 @@ public class User extends AbstractUser implements Subject {
 
     private String latestMessage;
     private int positiveMessageCount;
+    private long lastUpdateTime;
+    private String lastUpdateTimeString;
 
     public User(String userName) {
         super(userName);
@@ -60,6 +64,10 @@ public class User extends AbstractUser implements Subject {
     public void sendMessage(String message) {
         this.latestMessage = message;
         this.setMessageCount(this.getMessageCount() + 1);
+        lastUpdateTime = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+        Date resultDate = new Date(lastUpdateTime);
+        lastUpdateTimeString = sdf.format(resultDate);
 
         if (isPositiveMessage(message)) {
             ++positiveMessageCount;
@@ -73,6 +81,14 @@ public class User extends AbstractUser implements Subject {
      */
     public String getLatestMessage() {
         return this.latestMessage;
+    }
+
+    /*
+     * Returns last update made by User.
+     */
+    public String getLastUpdateTimeString() {
+        
+        return lastUpdateTimeString;
     }
 
     /**
@@ -115,7 +131,10 @@ public class User extends AbstractUser implements Subject {
      */
     @Override
     public void update(Subject subject) {
-        newsFeed.add(0, "Posted by "+(((User) subject).getUserName() + ": " + ((User) subject).getLatestMessage()));
+
+
+        newsFeed.add(0, "Posted by "+(((User) subject).getUserName() + " at "+ 
+        (((User) subject).getLastUpdateTimeString() +":  "+ ((User) subject).getLatestMessage())));
     }
 
 

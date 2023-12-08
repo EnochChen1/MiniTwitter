@@ -16,6 +16,9 @@ public class ShowInfoButtons extends ControlPanel {
     private JButton groupTotalButton;
     private JButton messagesTotalButton;
     private JButton positivePercentageButton;
+    private JButton userValidationButton;
+    private JButton latestUserButton;
+
 
     private JPanel treePanel;
     private static JFrame frame;
@@ -36,6 +39,10 @@ public class ShowInfoButtons extends ControlPanel {
         addComponent(this, groupTotalButton, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(this, messagesTotalButton, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(this, positivePercentageButton, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(this, userValidationButton, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(this, latestUserButton, 1, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+
+    
     }
 
     private void initializeComponents() {
@@ -54,6 +61,13 @@ public class ShowInfoButtons extends ControlPanel {
         positivePercentageButton = new JButton("Show Positive Percentage");
         positivePercentageButton.setBackground(Color.cyan);
         initializePositivePercentageButtonActionListener();
+
+        userValidationButton = new JButton("User Validation");
+        userValidationButton.setBackground(Color.cyan);
+        initializeUserValidationButtonActionListener();
+
+        latestUserButton = new JButton("Latest User");
+        latestUserButton.setBackground(Color.cyan);
     }
 
     /**
@@ -175,6 +189,21 @@ public class ShowInfoButtons extends ControlPanel {
 
                 JOptionPane.showMessageDialog(frame, message,
                 ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
+            }
+        });
+    }
+
+    private void initializeUserValidationButtonActionListener() {
+        userValidationButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultMutableTreeNode rootTreeNode = getRootTreeNode();
+                String message = 
+                "Usernames must be unique and cannot contain spaces by default. Therefore, they are all valid.";
+                JOptionPane.showMessageDialog(frame, message,
+                ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
+
             }
         });
     }
