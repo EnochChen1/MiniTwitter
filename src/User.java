@@ -25,7 +25,7 @@ public class User extends AbstractUser implements Subject {
 
     private String latestMessage;
     private int positiveMessageCount;
-    private long lastUpdateTime;
+    private long lastUpdateTime = 0;
     private String lastUpdateTimeString;
 
     public User(String userName) {
@@ -72,7 +72,7 @@ public class User extends AbstractUser implements Subject {
         if (isPositiveMessage(message)) {
             ++positiveMessageCount;
         }
-
+        
         notifyObservers();
     }
 
@@ -81,6 +81,13 @@ public class User extends AbstractUser implements Subject {
      */
     public String getLatestMessage() {
         return this.latestMessage;
+    }
+
+    /*
+     * Returns last update milliseconds by User
+     */
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
     }
 
     /*

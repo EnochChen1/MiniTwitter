@@ -17,7 +17,7 @@ public class ShowInfoButtons extends ControlPanel {
     private JButton messagesTotalButton;
     private JButton positivePercentageButton;
     private JButton userValidationButton;
-    private JButton latestUserButton;
+    private JButton latestUserUpdateButton;
 
 
     private JPanel treePanel;
@@ -40,7 +40,7 @@ public class ShowInfoButtons extends ControlPanel {
         addComponent(this, messagesTotalButton, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(this, positivePercentageButton, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         addComponent(this, userValidationButton, 0, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
-        addComponent(this, latestUserButton, 1, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+        addComponent(this, latestUserUpdateButton, 1, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH);
 
     
     }
@@ -66,8 +66,9 @@ public class ShowInfoButtons extends ControlPanel {
         userValidationButton.setBackground(Color.cyan);
         initializeUserValidationButtonActionListener();
 
-        latestUserButton = new JButton("Latest User");
-        latestUserButton.setBackground(Color.cyan);
+        latestUserUpdateButton = new JButton("Latest User Updated");
+        latestUserUpdateButton.setBackground(Color.cyan);
+        initializelatestUserUpdateButtonActionListener();
     }
 
     /**
@@ -207,5 +208,22 @@ public class ShowInfoButtons extends ControlPanel {
             }
         });
     }
+
+    private void initializelatestUserUpdateButtonActionListener() {
+        latestUserUpdateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultMutableTreeNode rootTreeNode = getRootTreeNode();
+                VisitorLatestUpdatedUser visitorLatestUpdatedUser = new VisitorLatestUpdatedUser();
+                ((AbstractUser) rootTreeNode).accept(visitorLatestUpdatedUser);
+                String latestUpdatedUser = visitorLatestUpdatedUser.visitUpdatedUser(((AbstractUser) rootTreeNode));
+                String message = 
+                " is the latest User to make the latest Update in their news feed.";
+                JOptionPane.showMessageDialog(frame, latestUpdatedUser+message,
+                ((AbstractUser) rootTreeNode).getUserName() + " information", JOptionPane.INFORMATION_MESSAGE );
+            }
+        });
+    }
+
 
 }
